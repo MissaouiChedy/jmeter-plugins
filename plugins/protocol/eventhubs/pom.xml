@@ -166,6 +166,7 @@
                             <include>com.azure:azure-messaging-eventhubs</include>
                             <include>com.azure:azure-core-amqp</include>
                             <include>org.apache.qpid:proton-j</include>
+                            <include>net.java.dev.jna:jna</include>
                         </includes>
                     </artifactSet>
                     <relocations>

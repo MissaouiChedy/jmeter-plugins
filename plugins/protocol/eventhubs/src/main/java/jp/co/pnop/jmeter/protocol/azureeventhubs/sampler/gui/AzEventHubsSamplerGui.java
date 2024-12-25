@@ -47,7 +47,8 @@ public class AzEventHubsSamplerGui extends AbstractSamplerGui implements ChangeL
     private JLabeledTextField namespaceName;
     private String[] AUTH_TYPE_LABELS = {
         AzEventHubsSampler.AUTHTYPE_SAS,
-        AzEventHubsSampler.AUTHTYPE_ENTRAID
+        AzEventHubsSampler.AUTHTYPE_ENTRAID,
+        AzEventHubsSampler.AZ_LOGIN_CLI
     };
     private JLabel authTypeLabel;
     private JPanel authPanel;
@@ -265,6 +266,8 @@ public class AzEventHubsSamplerGui extends AbstractSamplerGui implements ChangeL
         authPanel = new JPanel(new CardLayout());
         authPanel.add(createSharedAccessSignaturePanel(), AzEventHubsSampler.AUTHTYPE_SAS);
         authPanel.add(createAadCredentialPanel(), AzEventHubsSampler.AUTHTYPE_ENTRAID);
+        
+        authPanel.add(createAadCredentialPanel(), AzEventHubsSampler.AZ_LOGIN_CLI);
 
         return authPanel;
     }
@@ -304,6 +307,8 @@ public class AzEventHubsSamplerGui extends AbstractSamplerGui implements ChangeL
         CardLayout authTypeLayout = (CardLayout) authPanel.getLayout();
         if (authType.getText() == AzEventHubsSampler.AUTHTYPE_SAS) {
             authTypeLayout.show(authPanel, AzEventHubsSampler.AUTHTYPE_SAS);
+        } else if (authType.getText() == AzEventHubsSampler.AZ_LOGIN_CLI) {
+            authTypeLayout.show(authPanel, AzEventHubsSampler.AZ_LOGIN_CLI);
         } else { // AUTHTYPE_ENTRAID or AUTHTYPE_AAD
             authTypeLayout.show(authPanel, AzEventHubsSampler.AUTHTYPE_ENTRAID);
         }

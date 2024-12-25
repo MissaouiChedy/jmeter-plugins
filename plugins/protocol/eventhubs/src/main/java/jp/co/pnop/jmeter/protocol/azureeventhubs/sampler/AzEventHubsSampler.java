@@ -44,6 +44,8 @@ import org.slf4j.LoggerFactory;
 import com.azure.messaging.eventhubs.*;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.core.credential.TokenCredential;
 
 import jp.co.pnop.jmeter.protocol.aad.config.AzAdCredential;
 import jp.co.pnop.jmeter.protocol.aad.config.AzAdCredential.AzAdCredentialComponentImpl;
@@ -87,6 +89,8 @@ public class AzEventHubsSampler extends AbstractSampler implements TestStateList
     public static final String AUTHTYPE_SAS = "Shared access signature";
     public static final String AUTHTYPE_AAD = "Azure AD credential";
     public static final String AUTHTYPE_ENTRAID = "Microsoft Entra ID credential";
+    public static final String AZ_LOGIN_CLI = "AZ LOGIN CLI";
+    
 
     public static final String PARTITION_TYPE_NOT_SPECIFIED = "Not specified";
     public static final String PARTITION_TYPE_ID = "ID";
@@ -207,6 +211,11 @@ public class AzEventHubsSampler extends AbstractSampler implements TestStateList
                     .concat("Shared Access Policy: ").concat(getSharedAccessKeyName()).concat("\n")
                     .concat("Shared Access Key: **********");
                 producerBuilder = producerBuilder.connectionString(connectionString, getEventHubName());
+            } else if (getAuthType().equals(AZ_LOGIN_CLI)) {
+                TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
+                requestBody = requestBody.concat("AZ CLI LOGIN: oo YEAH");
+                producerBuilder = producerBuilder.credential(getNamespaceName(), getEventHubName(), credential);
             } else { // AUTHTYPE_ENTRAID or AUTHTYPE_AAD
                 AzAdCredentialComponentImpl credential = AzAdCredential.getCredential(getAadCredential());
                 requestBody = requestBody.concat(credential.getRequestBody());
