@@ -19,13 +19,13 @@ package jp.co.pnop.jmeter.protocol.azureeventhubs.sampler.gui;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.BorderFactory;
 
 import org.apache.jmeter.gui.util.HorizontalPanel;
 import org.apache.jmeter.gui.util.VerticalPanel;
@@ -34,8 +34,6 @@ import org.apache.jmeter.testelement.TestElement;
 import org.apache.jmeter.testelement.property.TestElementProperty;
 import org.apache.jorphan.gui.JLabeledChoice;
 import org.apache.jorphan.gui.JLabeledTextField;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
 
 import jp.co.pnop.jmeter.protocol.amqp.sampler.gui.AzAmqpMessagesPanel;
 import jp.co.pnop.jmeter.protocol.azureeventhubs.sampler.AzEventHubsSampler;
@@ -48,7 +46,7 @@ public class AzEventHubsSamplerGui extends AbstractSamplerGui implements ChangeL
     private String[] AUTH_TYPE_LABELS = {
         AzEventHubsSampler.AUTHTYPE_SAS,
         AzEventHubsSampler.AUTHTYPE_ENTRAID,
-        AzEventHubsSampler.AZ_LOGIN_CLI
+        AzEventHubsSampler.AUTHTYPE_AZCLI
     };
     private JLabel authTypeLabel;
     private JPanel authPanel;
@@ -202,6 +200,10 @@ public class AzEventHubsSamplerGui extends AbstractSamplerGui implements ChangeL
         return panel;
     }
 
+    private JPanel createAzCliCredentialPanel() {
+        return new VerticalPanel();
+    }
+
     private JPanel createSharedAccessSignaturePanel() {
         JPanel panel = new VerticalPanel();
         panel.add(createSharedAccessKeyNamePanel());
@@ -267,7 +269,7 @@ public class AzEventHubsSamplerGui extends AbstractSamplerGui implements ChangeL
         authPanel.add(createSharedAccessSignaturePanel(), AzEventHubsSampler.AUTHTYPE_SAS);
         authPanel.add(createAadCredentialPanel(), AzEventHubsSampler.AUTHTYPE_ENTRAID);
         
-        authPanel.add(createAadCredentialPanel(), AzEventHubsSampler.AZ_LOGIN_CLI);
+        authPanel.add(createAzCliCredentialPanel(), AzEventHubsSampler.AUTHTYPE_AZCLI);
 
         return authPanel;
     }
@@ -307,8 +309,8 @@ public class AzEventHubsSamplerGui extends AbstractSamplerGui implements ChangeL
         CardLayout authTypeLayout = (CardLayout) authPanel.getLayout();
         if (authType.getText() == AzEventHubsSampler.AUTHTYPE_SAS) {
             authTypeLayout.show(authPanel, AzEventHubsSampler.AUTHTYPE_SAS);
-        } else if (authType.getText() == AzEventHubsSampler.AZ_LOGIN_CLI) {
-            authTypeLayout.show(authPanel, AzEventHubsSampler.AZ_LOGIN_CLI);
+        } else if (authType.getText() == AzEventHubsSampler.AUTHTYPE_AZCLI) {
+            authTypeLayout.show(authPanel, AzEventHubsSampler.AUTHTYPE_AZCLI);
         } else { // AUTHTYPE_ENTRAID or AUTHTYPE_AAD
             authTypeLayout.show(authPanel, AzEventHubsSampler.AUTHTYPE_ENTRAID);
         }
